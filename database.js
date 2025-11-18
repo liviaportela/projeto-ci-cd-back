@@ -34,7 +34,7 @@ async function createUser(username, password) {
     
     // Verificar se usuário já existe
     if (data.users.find(u => u.username === username)) {
-        throw new Error('Usuário já existe');
+        throw new Error('...');
     }
     
     // Hash da senha
