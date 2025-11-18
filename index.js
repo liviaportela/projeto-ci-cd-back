@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 
 // Configurar CORS - vamos atualizar depois com a URL do front
 app.use(cors({
-  origin: ['https://seu-frontend.vercel.app', 'http://localhost:3000', '*'],
+  origin: ['projeto-ci-cd-front-five.vercel.app', 'http://localhost:3000', '*'],
   credentials: true
 }));
 
