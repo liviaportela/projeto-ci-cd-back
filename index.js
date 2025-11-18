@@ -12,7 +12,7 @@ app.use(cors({
 
 app.get('/', (req, res) => {
   res.json({ 
-    mensagem: "API online e integrada com CI/CD!",
+    mensagem: "API online e ... com CI/CD!",
     versao: "1.0.0",
     timestamp: new Date().toISOString()
   });
