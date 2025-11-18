@@ -1,0 +1,42 @@
+name: Deploy Render via Tag
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Mostrar tag detectada
+        run: echo "Iniciando deploy automático para a tag ${GITHUB_REF_NAME}"
+
+      - name: Chamar Render API para redeploy
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          SERVICE_ID: ${{ secrets.SERVICE_ID }}
+        run: |
+          echo "Enviando requisição para redeploy..."
+
+          # Faz a requisição para a API do Render e captura o status HTTP
+          response=$(curl -s -o response.json -w "%{http_code}" -X POST "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
+            -H "Accept: application/json" \
+            -H "Authorization: Bearer ${RENDER_API_KEY}" \
+            -d '')
+
+          echo "Código de resposta HTTP: $response"
+          echo "Resposta da API:"
+          cat response.json
+
+          # Falha o job se a resposta não for 2xx
+          if [[ "$response" != 2* ]]; then
+            echo "❌ Erro ao disparar deploy no Render!"
+            exit 1
+          fi
+
+          echo "✅ Deploy disparado com sucesso!"
